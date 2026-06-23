@@ -1,0 +1,113 @@
+{
+    "name": "Municipal Ward",
+    "module": "Civic Tracker",
+    "doctype": "DocType",
+    "document_type": "Document",
+    "engine": "InnoDB",
+    "autoname": "field:ward_name",
+    "title_field": "ward_name",
+    "search_fields": "ward_name,ward_code",
+    "fields": [
+        {
+            "fieldname": "ward_name",
+            "fieldtype": "Data",
+            "label": "Ward Name",
+            "reqd": 1,
+            "unique": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "ward_code",
+            "fieldtype": "Data",
+            "label": "Ward Code",
+            "reqd": 1,
+            "unique": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "commissioner_name",
+            "fieldtype": "Data",
+            "label": "Commissioner Name"
+        },
+        {
+            "fieldname": "commissioner_email",
+            "fieldtype": "Data",
+            "label": "Commissioner Email",
+            "options": "Email"
+        },
+        {
+            "fieldname": "commissioner_phone",
+            "fieldtype": "Phone",
+            "label": "Commissioner Phone"
+        },
+        {
+            "fieldname": "section_break_area",
+            "fieldtype": "Section Break",
+            "label": "Area Details"
+        },
+        {
+            "fieldname": "area_name",
+            "fieldtype": "Data",
+            "label": "Area / Locality"
+        },
+        {
+            "fieldname": "district",
+            "fieldtype": "Data",
+            "label": "District"
+        },
+        {
+            "fieldname": "state",
+            "fieldtype": "Data",
+            "label": "State"
+        },
+        {
+            "fieldname": "column_break_area",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "pincode",
+            "fieldtype": "Data",
+            "label": "Pincode",
+            "options": "Phone"
+        },
+        {
+            "fieldname": "population",
+            "fieldtype": "Int",
+            "label": "Approximate Population"
+        },
+        {
+            "fieldname": "section_break_notes",
+            "fieldtype": "Section Break",
+            "label": "Additional Notes"
+        },
+        {
+            "fieldname": "notes",
+            "fieldtype": "Small Text",
+            "label": "Notes"
+        }
+    ],
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        },
+        {
+            "role": "Civic Admin",
+            "read": 1,
+            "write": 1,
+            "create": 1
+        },
+        {
+            "role": "All",
+            "read": 1
+        }
+    ]
+}

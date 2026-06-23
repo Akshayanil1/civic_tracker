@@ -1,0 +1,9 @@
+{
+    "title": "Civic Dashboard",
+    "route": "civic-dashboard",
+    "template": "templates/pages/civic-dashboard.html",
+    "condition": "",
+    "description": "Executive dashboard for municipal commissioners",
+    "style": "Page",
+    "no_cache": 0
+}

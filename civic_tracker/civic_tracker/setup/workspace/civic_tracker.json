@@ -1,0 +1,49 @@
+{
+    "type": "Workspace",
+    "name": "Civic Tracker",
+    "module": "Civic Tracker",
+    "label": "Civic Tracker",
+    "icon": "fa fa-building",
+    "link": "Civic Issue",
+    "category": "Modules",
+    "shortcuts": [
+        {
+            "type": "DocType",
+            "name": "Civic Issue",
+            "label": "Civic Issues",
+            "color": "#2490ef",
+            "icon": "fa fa-exclamation-triangle",
+            "link": "List/Civic Issue",
+            "dependencies": "Civic Issue"
+        },
+        {
+            "type": "DocType",
+            "name": "Municipal Ward",
+            "label": "Municipal Wards",
+            "color": "#5e64ff",
+            "icon": "fa fa-map-marker",
+            "link": "List/Municipal Ward",
+            "dependencies": "Municipal Ward"
+        },
+        {
+            "type": "DocType",
+            "name": "Civic Contractor",
+            "label": "Contractors",
+            "color": "#ff5858",
+            "icon": "fa fa-users",
+            "link": "List/Civic Contractor",
+            "dependencies": "Civic Contractor"
+        },
+        {
+            "type": "DocType",
+            "name": "Issue SLA",
+            "label": "Issue SLA",
+            "color": "#ff8c00",
+            "icon": "fa fa-clock-o",
+            "link": "List/Issue SLA",
+            "dependencies": "Issue SLA"
+        }
+    ],
+    "onboard_present": 1,
+    "docs": []
+}

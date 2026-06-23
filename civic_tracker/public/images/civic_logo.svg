@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <rect width="100" height="100" rx="20" fill="#2490ef"/>
+  <g transform="translate(15, 15)">
+    <!-- Building/City icon -->
+    <rect x="10" y="30" width="20" height="40" fill="white" rx="2"/>
+    <rect x="35" y="15" width="20" height="55" fill="white" rx="2"/>
+    <rect x="60" y="25" width="20" height="45" fill="white" rx="2"/>
+    <!-- Windows -->
+    <rect x="15" y="35" width="4" height="4" fill="#2490ef"/>
+    <rect x="21" y="35" width="4" height="4" fill="#2490ef"/>
+    <rect x="15" y="43" width="4" height="4" fill="#2490ef"/>
+    <rect x="21" y="43" width="4" height="4" fill="#2490ef"/>
+    <rect x="40" y="20" width="4" height="4" fill="#2490ef"/>
+    <rect x="46" y="20" width="4" height="4" fill="#2490ef"/>
+    <rect x="40" y="28" width="4" height="4" fill="#2490ef"/>
+    <rect x="46" y="28" width="4" height="4" fill="#2490ef"/>
+    <rect x="40" y="36" width="4" height="4" fill="#2490ef"/>
+    <rect x="46" y="36" width="4" height="4" fill="#2490ef"/>
+    <rect x="65" y="30" width="4" height="4" fill="#2490ef"/>
+    <rect x="71" y="30" width="4" height="4" fill="#2490ef"/>
+    <rect x="65" y="38" width="4" height="4" fill="#2490ef"/>
+    <rect x="71" y="38" width="4" height="4" fill="#2490ef"/>
+    <!-- Pin/marker -->
+    <circle cx="45" cy="55" r="5" fill="#ff5858"/>
+    <circle cx="45" cy="55" r="2" fill="white"/>
+  </g>
+</svg>

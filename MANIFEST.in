@@ -1,0 +1,12 @@
+include MANIFEST.in
+include requirements.txt
+include *.md
+include LICENSE
+include pyproject.toml
+recursive-include civic_tracker *.py
+recursive-include civic_tracker *.json
+recursive-include civic_tracker *.js
+recursive-include civic_tracker *.css
+recursive-include civic_tracker *.html
+recursive-include civic_tracker *.xml
+recursive-include civic_tracker *.svg

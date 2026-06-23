@@ -1,0 +1,9 @@
+{
+    "title": "Report a Civic Issue",
+    "route": "report-issue",
+    "template": "templates/pages/report-issue.html",
+    "condition": "",
+    "description": "Report potholes, garbage, water leaks, and other civic issues",
+    "style": "Page",
+    "no_cache": 0
+}

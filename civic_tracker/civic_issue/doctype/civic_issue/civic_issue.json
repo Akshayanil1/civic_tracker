@@ -1,0 +1,234 @@
+{
+    "name": "Civic Issue",
+    "module": "Civic Tracker",
+    "doctype": "DocType",
+    "document_type": "Document",
+    "engine": "InnoDB",
+    "autoname": "format:CI-{####}",
+    "title_field": "issue_title",
+    "search_fields": "issue_title,tracking_id,issue_type",
+    "fields": [
+        {
+            "fieldname": "issue_title",
+            "fieldtype": "Data",
+            "label": "Issue Title",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "tracking_id",
+            "fieldtype": "Data",
+            "label": "Tracking ID",
+            "read_only": 1,
+            "unique": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "column_break_basic",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Status",
+            "options": "Open\\nAssigned\\nIn Progress\\nResolved\\nClosed\\nOverdue\\nReopened",
+            "default": "Open",
+            "reqd": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "issue_type",
+            "fieldtype": "Select",
+            "label": "Issue Type",
+            "options": "Road\\nWater\\nSanitation\\nElectricity\\nGarbage\\nDrainage\\nStreet Light\\nOther",
+            "reqd": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "priority",
+            "fieldtype": "Select",
+            "label": "Priority",
+            "options": "Low\\nMedium\\nHigh\\nCritical",
+            "default": "Medium",
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "column_break_type",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "issue_date",
+            "fieldtype": "Datetime",
+            "label": "Reported On",
+            "default": "Now",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "due_date",
+            "fieldtype": "Datetime",
+            "label": "Due Date (SLA)",
+            "read_only": 1
+        },
+        {
+            "fieldname": "escalation_time",
+            "fieldtype": "Datetime",
+            "label": "Escalation Time",
+            "read_only": 1
+        },
+        {
+            "fieldname": "section_break_description",
+            "fieldtype": "Section Break",
+            "label": "Issue Description"
+        },
+        {
+            "fieldname": "description",
+            "fieldtype": "Text Editor",
+            "label": "Description",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_image",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "issue_image",
+            "fieldtype": "Attach Image",
+            "label": "Issue Photo"
+        },
+        {
+            "fieldname": "section_break_location",
+            "fieldtype": "Section Break",
+            "label": "Location Details"
+        },
+        {
+            "fieldname": "ward",
+            "fieldtype": "Link",
+            "label": "Ward",
+            "options": "Municipal Ward",
+            "reqd": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "column_break_location",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "latitude",
+            "fieldtype": "Float",
+            "label": "Latitude"
+        },
+        {
+            "fieldname": "longitude",
+            "fieldtype": "Float",
+            "label": "Longitude"
+        },
+        {
+            "fieldname": "address_text",
+            "fieldtype": "Small Text",
+            "label": "Address / Landmark"
+        },
+        {
+            "fieldname": "section_break_assignment",
+            "fieldtype": "Section Break",
+            "label": "Assignment & Resolution"
+        },
+        {
+            "fieldname": "assigned_contractor",
+            "fieldtype": "Link",
+            "label": "Assigned Contractor",
+            "options": "Civic Contractor",
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "column_break_assignment",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "resolution_date",
+            "fieldtype": "Datetime",
+            "label": "Resolution Date",
+            "read_only": 1
+        },
+        {
+            "fieldname": "resolution_notes",
+            "fieldtype": "Small Text",
+            "label": "Resolution Notes"
+        },
+        {
+            "fieldname": "section_break_citizen",
+            "fieldtype": "Section Break",
+            "label": "Citizen Details"
+        },
+        {
+            "fieldname": "citizen_name",
+            "fieldtype": "Data",
+            "label": "Citizen Name"
+        },
+        {
+            "fieldname": "citizen_email",
+            "fieldtype": "Data",
+            "label": "Citizen Email",
+            "options": "Email"
+        },
+        {
+            "fieldname": "column_break_citizen",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "citizen_phone",
+            "fieldtype": "Phone",
+            "label": "Citizen Phone"
+        },
+        {
+            "fieldname": "is_anonymous",
+            "fieldtype": "Check",
+            "label": "Anonymous Report"
+        },
+        {
+            "fieldname": "section_break_escalation",
+            "fieldtype": "Section Break",
+            "label": "Escalation History",
+            "hidden": 1
+        },
+        {
+            "fieldname": "escalation_log",
+            "fieldtype": "Table",
+            "label": "Escalation Log",
+            "options": "Issue Escalation Log"
+        }
+    ],
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1,
+            "submit": 0,
+            "cancel": 0
+        },
+        {
+            "role": "Civic Admin",
+            "read": 1,
+            "write": 1,
+            "create": 1
+        },
+        {
+            "role": "Civic Contractor",
+            "read": 1,
+            "write": 1
+        },
+        {
+            "role": "All",
+            "read": 1,
+            "create": 1,
+            "email": 1
+        }
+    ]
+}

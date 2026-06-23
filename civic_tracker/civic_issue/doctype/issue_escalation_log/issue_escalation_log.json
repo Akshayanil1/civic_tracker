@@ -1,0 +1,41 @@
+{
+    "name": "Issue Escalation Log",
+    "module": "Civic Tracker",
+    "doctype": "DocType",
+    "document_type": "Document",
+    "engine": "InnoDB",
+    "istable": 1,
+    "fields": [
+        {
+            "fieldname": "escalation_level",
+            "fieldtype": "Int",
+            "label": "Level",
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "escalated_to",
+            "fieldtype": "Data",
+            "label": "Escalated To",
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "escalation_type",
+            "fieldtype": "Select",
+            "label": "Type",
+            "options": "SLA Breach\\nContractor No Response\\nWard Commissioner\\nDistrict Magistrate",
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "escalation_date",
+            "fieldtype": "Datetime",
+            "label": "Date",
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "notification_sent",
+            "fieldtype": "Check",
+            "label": "Email Sent"
+        }
+    ],
+    "permissions": []
+}

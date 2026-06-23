@@ -1,0 +1,9 @@
+{
+    "title": "Track Your Issue",
+    "route": "track-issue",
+    "template": "templates/pages/track-issue.html",
+    "condition": "",
+    "description": "Track the status of your civic issue using your Tracking ID",
+    "style": "Page",
+    "no_cache": 0
+}

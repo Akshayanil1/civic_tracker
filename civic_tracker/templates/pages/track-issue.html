@@ -1,0 +1,245 @@
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="civic-track-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="page-header">
+                    <h1>Track Your Issue</h1>
+                    <p class="text-muted">Enter your Tracking ID to check the status of your reported issue.</p>
+                </div>
+
+                <div id="search-form" class="card mb-4">
+                    <div class="card-body">
+                        <form id="track-form" class="row g-3 align-items-end">
+                            <div class="col-md-9">
+                                <label class="form-label">Tracking ID</label>
+                                <input type="text" class="form-control form-control-lg" id="tracking_id_input"
+                                    placeholder="e.g., CT-25-ABC123" value="{{ tracking_id or '' }}">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary btn-lg w-100">Track</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="issue-details" class="d-none">
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0" id="issue-title"></h4>
+                            <span class="badge" id="issue-status-badge"></span>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><strong>Tracking ID:</strong> <span id="detail-tracking-id"></span></p>
+                                    <p><strong>Issue Type:</strong> <span id="detail-issue-type"></span></p>
+                                    <p><strong>Priority:</strong> <span id="detail-priority"></span></p>
+                                    <p><strong>Ward:</strong> <span id="detail-ward"></span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Reported On:</strong> <span id="detail-date"></span></p>
+                                    <p><strong>Due Date:</strong> <span id="detail-due-date"></span></p>
+                                    <p><strong>Assigned To:</strong> <span id="detail-contractor"></span></p>
+                                    <p><strong>Resolution Date:</strong> <span id="detail-resolution-date"></span></p>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="mb-3">
+                                <h6>Description</h6>
+                                <p id="detail-description" class="text-muted"></p>
+                            </div>
+
+                            <div id="resolution-section" class="d-none">
+                                <div class="alert alert-success">
+                                    <h6>Resolution Notes</h6>
+                                    <p id="detail-resolution-notes" class="mb-0"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Status Timeline</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="status-timeline">
+                                <div class="timeline-item active">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <h6>Issue Reported</h6>
+                                        <p class="text-muted" id="timeline-reported"></p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item" id="timeline-assigned-item">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <h6>Assigned to Contractor</h6>
+                                        <p class="text-muted" id="timeline-assigned"></p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item" id="timeline-progress-item">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <h6>In Progress</h6>
+                                        <p class="text-muted">Work in progress</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item" id="timeline-resolved-item">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <h6>Resolved</h6>
+                                        <p class="text-muted" id="timeline-resolved"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="error-message" class="alert alert-danger d-none">
+                    <strong>Not Found:</strong> No issue found with this Tracking ID. Please check and try again.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var trackingId = '{{ tracking_id or "" }}';
+    if (trackingId) {
+        document.getElementById('tracking_id_input').value = trackingId;
+        trackIssue(trackingId);
+    }
+});
+
+document.getElementById('track-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var trackingId = document.getElementById('tracking_id_input').value.trim();
+    if (trackingId) {
+        trackIssue(trackingId);
+    }
+});
+
+function trackIssue(trackingId) {
+    frappe.call({
+        method: 'civic_tracker.api.issue.get_issue_by_tracking_id',
+        args: { tracking_id: trackingId },
+        callback: function(r) {
+            if (r.message) {
+                displayIssue(r.message);
+            }
+        },
+        error: function() {
+            document.getElementById('issue-details').classList.add('d-none');
+            document.getElementById('error-message').classList.remove('d-none');
+        }
+    });
+}
+
+function displayIssue(issue) {
+    document.getElementById('issue-details').classList.remove('d-none');
+    document.getElementById('error-message').classList.add('d-none');
+
+    document.getElementById('issue-title').textContent = issue.issue_title;
+    document.getElementById('detail-tracking-id').textContent = issue.tracking_id;
+    document.getElementById('detail-issue-type').textContent = issue.issue_type;
+    document.getElementById('detail-priority').textContent = issue.priority;
+    document.getElementById('detail-ward').textContent = issue.ward_name || issue.ward;
+    document.getElementById('detail-date').textContent = frappe.datetime.str_to_user(issue.issue_date);
+    document.getElementById('detail-due-date').textContent = issue.due_date ? frappe.datetime.str_to_user(issue.due_date) : 'N/A';
+    document.getElementById('detail-contractor').textContent = issue.contractor_name || issue.assigned_contractor || 'Not yet assigned';
+    document.getElementById('detail-resolution-date').textContent = issue.resolution_date ? frappe.datetime.str_to_user(issue.resolution_date) : 'N/A';
+    document.getElementById('detail-description').textContent = issue.description;
+
+    // Status badge
+    var badge = document.getElementById('issue-status-badge');
+    badge.textContent = issue.status;
+    badge.className = 'badge badge-' + getStatusColor(issue.status);
+
+    // Resolution
+    if (issue.status === 'Resolved' || issue.status === 'Closed') {
+        document.getElementById('resolution-section').classList.remove('d-none');
+        document.getElementById('detail-resolution-notes').textContent = issue.resolution_notes || 'Issue has been resolved.';
+    }
+
+    // Timeline
+    document.getElementById('timeline-reported').textContent = frappe.datetime.str_to_user(issue.issue_date);
+    if (issue.status !== 'Open') {
+        document.getElementById('timeline-assigned-item').classList.add('completed');
+    }
+    if (['In Progress', 'Resolved', 'Closed'].indexOf(issue.status) !== -1) {
+        document.getElementById('timeline-progress-item').classList.add('completed');
+    }
+    if (['Resolved', 'Closed'].indexOf(issue.status) !== -1) {
+        document.getElementById('timeline-resolved-item').classList.add('completed');
+        document.getElementById('timeline-resolved').textContent = frappe.datetime.str_to_user(issue.resolution_date);
+    }
+}
+
+function getStatusColor(status) {
+    var colors = {
+        'Open': 'warning',
+        'Assigned': 'info',
+        'In Progress': 'primary',
+        'Overdue': 'danger',
+        'Resolved': 'success',
+        'Closed': 'secondary',
+        'Reopened': 'warning'
+    };
+    return colors[status] || 'secondary';
+}
+</script>
+
+<style>
+.civic-track-page {
+    padding: 2rem 0;
+}
+.page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.page-header h1 {
+    color: #2490ef;
+}
+.timeline-item {
+    display: flex;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+.timeline-marker {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #dee2e6;
+    border: 2px solid #dee2e6;
+    margin-right: 1rem;
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+.timeline-item.active .timeline-marker,
+.timeline-item.completed .timeline-marker {
+    background: #2490ef;
+    border-color: #2490ef;
+}
+.timeline-item.completed .timeline-marker {
+    background: #28a745;
+    border-color: #28a745;
+}
+.timeline-content h6 {
+    margin-bottom: 0.25rem;
+}
+.badge-success { background-color: #28a745; color: white; }
+.badge-warning { background-color: #ffc107; color: #212529; }
+.badge-danger { background-color: #dc3545; color: white; }
+.badge-info { background-color: #17a2b8; color: white; }
+.badge-primary { background-color: #2490ef; color: white; }
+.badge-secondary { background-color: #6c757d; color: white; }
+</style>
+{% endblock %}

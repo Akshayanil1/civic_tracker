@@ -1,0 +1,23 @@
+/* Civic Tracker - Custom Styles */
+.civic-report-page .card,
+.civic-track-page .card,
+.civic-dashboard .card {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.civic-report-page .form-control:focus,
+.civic-track-page .form-control:focus {
+    border-color: #2490ef;
+    box-shadow: 0 0 0 0.2rem rgba(36, 144, 239, 0.15);
+}
+
+.btn-primary {
+    background-color: #2490ef;
+    border-color: #2490ef;
+}
+
+.btn-primary:hover {
+    background-color: #1a7fd4;
+    border-color: #1a7fd4;
+}

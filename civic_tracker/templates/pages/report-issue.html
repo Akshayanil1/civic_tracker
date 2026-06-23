@@ -1,0 +1,300 @@
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="civic-report-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="page-header">
+                    <h1>Report a Civic Issue</h1>
+                    <p class="text-muted">
+                        Help us improve your city. Report potholes, garbage accumulation,
+                        water leaks, broken street lights, and other civic problems.
+                    </p>
+                </div>
+
+                <div id="report-form" class="card">
+                    <div class="card-body">
+                        <form id="civic-issue-form">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Issue Title <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="issue_title" required
+                                        placeholder="Brief description of the issue">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Issue Type <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="issue_type" required>
+                                        <option value="">Select Type</option>
+                                        <option value="Road">Road (Potholes, Damage)</option>
+                                        <option value="Water">Water (Leak, Supply)</option>
+                                        <option value="Sanitation">Sanitation (Garbage, Drainage)</option>
+                                        <option value="Electricity">Electricity (Power, Cables)</option>
+                                        <option value="Garbage">Garbage (Collection, Dumping)</option>
+                                        <option value="Drainage">Drainage (Blocked, Overflow)</option>
+                                        <option value="Street Light">Street Light (Broken, Off)</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Ward <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="ward" required>
+                                        <option value="">Select Ward</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Priority</label>
+                                    <select class="form-select" id="priority">
+                                        <option value="Low">Low</option>
+                                        <option value="Medium" selected>Medium</option>
+                                        <option value="High">High</option>
+                                        <option value="Critical">Critical</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Description <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="description" rows="4" required
+                                    placeholder="Describe the issue in detail - location, severity, how long it has existed..."></textarea>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Issue Photo</label>
+                                    <input type="file" class="form-control" id="issue_image" accept="image/*">
+                                    <small class="text-muted">Upload a photo of the issue (optional but helpful)</small>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Address / Landmark</label>
+                                    <input type="text" class="form-control" id="address_text"
+                                        placeholder="Nearby landmark or address">
+                                </div>
+                            </div>
+
+                            <div class="card bg-light mb-3">
+                                <div class="card-body">
+                                    <h6>Location (Auto-detected)</h6>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <label class="form-label">Latitude</label>
+                                            <input type="number" step="any" class="form-control" id="latitude" readonly>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label class="form-label">Longitude</label>
+                                            <input type="number" step="any" class="form-control" id="longitude" readonly>
+                                        </div>
+                                        <div class="col-md-2 d-flex align-items-end">
+                                            <button type="button" class="btn btn-outline-primary btn-sm w-100"
+                                                onclick="getGeolocation()">Detect</button>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted" id="geo-status">Click "Detect" to auto-fill your location</small>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">Your Name</label>
+                                    <input type="text" class="form-control" id="citizen_name"
+                                        placeholder="Optional">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="citizen_email"
+                                        placeholder="For tracking updates">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" class="form-control" id="citizen_phone"
+                                        placeholder="Optional">
+                                </div>
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="is_anonymous">
+                                <label class="form-check-label" for="is_anonymous">
+                                    Submit anonymously (your details won't be shared)
+                                </label>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">
+                                    Submit Issue Report
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="success-message" class="card d-none">
+                    <div class="card-body text-center py-5">
+                        <div class="mb-3">
+                            <i class="fa fa-check-circle text-success" style="font-size: 4rem;"></i>
+                        </div>
+                        <h2>Issue Reported Successfully!</h2>
+                        <p class="text-muted mb-4">Your civic issue has been registered.</p>
+                        <div class="alert alert-info">
+                            <strong>Your Tracking ID:</strong>
+                            <span id="tracking-id" class="fs-4 fw-bold"></span>
+                        </div>
+                        <p>Save this Tracking ID to check the status of your issue later.</p>
+                        <a id="track-link" href="#" class="btn btn-outline-primary">Track Your Issue</a>
+                        <button class="btn btn-link" onclick="resetForm()">Report Another Issue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadWards();
+    detectLocationOnLoad();
+});
+
+function loadWards() {
+    frappe.call({
+        method: 'frappe.client.get_list',
+        args: {
+            doctype: 'Municipal Ward',
+            fields: ['name', 'ward_name'],
+            limit_page_length: 100,
+            order_by: 'ward_name'
+        },
+        callback: function(r) {
+            if (r.message) {
+                var wardSelect = document.getElementById('ward');
+                r.message.forEach(function(ward) {
+                    var opt = document.createElement('option');
+                    opt.value = ward.name;
+                    opt.textContent = ward.ward_name;
+                    wardSelect.appendChild(opt);
+                });
+            }
+        }
+    });
+}
+
+function getGeolocation() {
+    var status = document.getElementById('geo-status');
+    if (!navigator.geolocation) {
+        status.textContent = 'Geolocation is not supported by your browser';
+        status.className = 'text-danger';
+        return;
+    }
+    status.textContent = 'Detecting location...';
+    status.className = 'text-muted';
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            document.getElementById('latitude').value = position.coords.latitude.toFixed(6);
+            document.getElementById('longitude').value = position.coords.longitude.toFixed(6);
+            status.textContent = 'Location detected successfully!';
+            status.className = 'text-success';
+        },
+        function(error) {
+            status.textContent = 'Unable to detect location: ' + error.message;
+            status.className = 'text-danger';
+        }
+    );
+}
+
+function detectLocationOnLoad() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                document.getElementById('latitude').value = position.coords.latitude.toFixed(6);
+                document.getElementById('longitude').value = position.coords.longitude.toFixed(6);
+                document.getElementById('geo-status').textContent = 'Location auto-detected';
+                document.getElementById('geo-status').className = 'text-success';
+            },
+            function() {}
+        );
+    }
+}
+
+document.getElementById('civic-issue-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    submitIssue();
+});
+
+function submitIssue() {
+    var btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    var formData = {
+        issue_title: document.getElementById('issue_title').value,
+        issue_type: document.getElementById('issue_type').value,
+        description: document.getElementById('description').value,
+        ward: document.getElementById('ward').value,
+        priority: document.getElementById('priority').value,
+        address_text: document.getElementById('address_text').value,
+        latitude: document.getElementById('latitude').value || null,
+        longitude: document.getElementById('longitude').value || null,
+        citizen_name: document.getElementById('citizen_name').value || null,
+        citizen_email: document.getElementById('citizen_email').value || null,
+        citizen_phone: document.getElementById('citizen_phone').value || null,
+        is_anonymous: document.getElementById('is_anonymous').checked ? 1 : 0
+    };
+
+    frappe.call({
+        method: 'civic_tracker.api.issue.submit_civic_issue',
+        args: formData,
+        callback: function(r) {
+            if (r.message) {
+                document.getElementById('report-form').classList.add('d-none');
+                document.getElementById('success-message').classList.remove('d-none');
+                document.getElementById('tracking-id').textContent = r.message.tracking_id;
+                document.getElementById('track-link').href = '/track-issue/' + r.message.tracking_id;
+            }
+        },
+        error: function(err) {
+            frappe.msgprint({
+                title: 'Error',
+                message: err.message || 'Failed to submit issue. Please try again.',
+                indicator: 'red'
+            });
+            btn.disabled = false;
+            btn.textContent = 'Submit Issue Report';
+        }
+    });
+}
+
+function resetForm() {
+    document.getElementById('civic-issue-form').reset();
+    document.getElementById('report-form').classList.remove('d-none');
+    document.getElementById('success-message').classList.add('d-none');
+    document.getElementById('submit-btn').disabled = false;
+    document.getElementById('submit-btn').textContent = 'Submit Issue Report';
+    document.getElementById('geo-status').textContent = 'Click "Detect" to auto-fill your location';
+    document.getElementById('geo-status').className = 'text-muted';
+}
+</script>
+
+<style>
+.civic-report-page {
+    padding: 2rem 0;
+}
+.page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.page-header h1 {
+    color: #2490ef;
+    margin-bottom: 0.5rem;
+}
+.civic-report-page .card {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.civic-report-page .form-label {
+    font-weight: 500;
+}
+</style>
+{% endblock %}

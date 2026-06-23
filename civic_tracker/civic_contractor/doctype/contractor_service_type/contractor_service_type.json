@@ -1,0 +1,26 @@
+{
+    "name": "Contractor Service Type",
+    "module": "Civic Tracker",
+    "doctype": "DocType",
+    "document_type": "Document",
+    "engine": "InnoDB",
+    "istable": 1,
+    "fields": [
+        {
+            "fieldname": "service_type",
+            "fieldtype": "Select",
+            "label": "Service Type",
+            "options": "Road\\nWater\\nSanitation\\nElectricity\\nGarbage\\nDrainage\\nStreet Light\\nOther",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "sla_hours",
+            "fieldtype": "Int",
+            "label": "SLA (Hours)",
+            "in_list_view": 1,
+            "default": 48
+        }
+    ],
+    "permissions": []
+}

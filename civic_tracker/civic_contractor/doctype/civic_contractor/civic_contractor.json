@@ -1,0 +1,133 @@
+{
+    "name": "Civic Contractor",
+    "module": "Civic Tracker",
+    "doctype": "DocType",
+    "document_type": "Document",
+    "engine": "InnoDB",
+    "autoname": "field:contractor_name",
+    "title_field": "contractor_name",
+    "search_fields": "contractor_name,company_name",
+    "fields": [
+        {
+            "fieldname": "contractor_name",
+            "fieldtype": "Data",
+            "label": "Contractor Name",
+            "reqd": 1,
+            "unique": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "company_name",
+            "fieldtype": "Data",
+            "label": "Company Name",
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "contact_person",
+            "fieldtype": "Data",
+            "label": "Contact Person"
+        },
+        {
+            "fieldname": "email",
+            "fieldtype": "Data",
+            "label": "Email",
+            "options": "Email"
+        },
+        {
+            "fieldname": "phone",
+            "fieldtype": "Phone",
+            "label": "Phone"
+        },
+        {
+            "fieldname": "section_break_contract",
+            "fieldtype": "Section Break",
+            "label": "Contract Details"
+        },
+        {
+            "fieldname": "contract_start_date",
+            "fieldtype": "Date",
+            "label": "Contract Start Date",
+            "reqd": 1
+        },
+        {
+            "fieldname": "contract_end_date",
+            "fieldtype": "Date",
+            "label": "Contract End Date"
+        },
+        {
+            "fieldname": "column_break_contract",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Status",
+            "options": "Active\\nInactive\\nSuspended\\nExpired",
+            "default": "Active",
+            "reqd": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "contract_value",
+            "fieldtype": "Currency",
+            "label": "Contract Value"
+        },
+        {
+            "fieldname": "section_break_wards",
+            "fieldtype": "Section Break",
+            "label": "Assigned Wards"
+        },
+        {
+            "fieldname": "assigned_ward",
+            "fieldtype": "Table",
+            "label": "Assigned Wards",
+            "options": "Contractor Ward Assignment"
+        },
+        {
+            "fieldname": "section_break_services",
+            "fieldtype": "Section Break",
+            "label": "Service Types"
+        },
+        {
+            "fieldname": "service_types",
+            "fieldtype": "Table",
+            "label": "Service Types",
+            "options": "Contractor Service Type"
+        },
+        {
+            "fieldname": "section_break_notes",
+            "fieldtype": "Section Break",
+            "label": "Additional Notes"
+        },
+        {
+            "fieldname": "notes",
+            "fieldtype": "Small Text",
+            "label": "Notes"
+        }
+    ],
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        },
+        {
+            "role": "Civic Admin",
+            "read": 1,
+            "write": 1,
+            "create": 1
+        },
+        {
+            "role": "All",
+            "read": 1
+        }
+    ]
+}
