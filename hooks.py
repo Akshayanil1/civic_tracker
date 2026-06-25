@@ -22,19 +22,28 @@ add_to_apps_screen = [
 website_route_rules = [
     {"from_route": "/report-issue", "to_route": "report-issue"},
     {"from_route": "/track-issue/<path:tracking_id>", "to_route": "track-issue"},
+    {"from_route": "/api/method/civic_tracker.api.whatsapp.webhook_verify", "to_route": "api/method/civic_tracker.api.whatsapp.webhook_verify"},
+    {"from_route": "/api/method/civic_tracker.api.whatsapp.webhook_receive", "to_route": "api/method/civic_tracker.api.whatsapp.webhook_receive"},
+    {"from_route": "/city-map", "to_route": "city-map"},
+    {"from_route": "/ward-leaderboard", "to_route": "ward-leaderboard"},
 ]
 
 # Scheduled Jobs
 scheduler_events = {
     "daily": [
         "civic_tracker.api.sla.check_overdue_issues",
+        "civic_tracker.api.penalty.check_unpaid_penalties",
     ],
 }
 
 # Document Events
 doc_events = {
     "Civic Issue": {
-        "on_update": "civic_tracker.api.sla.on_civic_issue_update",
+        "on_update": [
+            "civic_tracker.api.sla.on_civic_issue_update",
+            "civic_tracker.api.penalty.auto_generate_penalty_on_close"
+        ],
+        "on_change": "civic_tracker.api.whatsapp.send_status_update_whatsapp",
     },
 }
 

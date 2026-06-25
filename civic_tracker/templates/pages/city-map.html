@@ -1,0 +1,350 @@
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="civic-map-page">
+    <div class="container-fluid">
+        <div class="map-header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div>
+                    <h1><i class="fa fa-map-marked-alt"></i> City Issue Map</h1>
+                    <p class="text-muted mb-0">Real-time geospatial view of civic issues across the city</p>
+                </div>
+                <div class="map-stats d-flex gap-3" id="map-stats">
+                    <div class="stat-badge stat-open">
+                        <span class="stat-count" id="stat-open">-</span>
+                        <span class="stat-label">Open</span>
+                    </div>
+                    <div class="stat-badge stat-overdue">
+                        <span class="stat-count" id="stat-overdue">-</span>
+                        <span class="stat-label">Overdue</span>
+                    </div>
+                    <div class="stat-badge stat-active">
+                        <span class="stat-count" id="stat-active">-</span>
+                        <span class="stat-label">Active</span>
+                    </div>
+                    <div class="stat-badge stat-resolved">
+                        <span class="stat-count" id="stat-resolved">-</span>
+                        <span class="stat-label">Resolved</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-filters card mb-3">
+            <div class="card-body py-2">
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <select class="form-select form-select-sm" id="filter-status" onchange="loadMapData()">
+                            <option value="">All Statuses</option>
+                            <option value="Open">Open</option>
+                            <option value="Assigned">Assigned</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Overdue">Overdue</option>
+                            <option value="Resolved">Resolved</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select form-select-sm" id="filter-ward" onchange="loadMapData()">
+                            <option value="">All Wards</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select form-select-sm" id="filter-type" onchange="loadMapData()">
+                            <option value="">All Types</option>
+                            <option value="Road">Road</option>
+                            <option value="Water">Water</option>
+                            <option value="Sanitation">Sanitation</option>
+                            <option value="Electricity">Electricity</option>
+                            <option value="Garbage">Garbage</option>
+                            <option value="Drainage">Drainage</option>
+                            <option value="Street Light">Street Light</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <button class="btn btn-sm btn-outline-primary" onclick="loadMapData()">
+                            <i class="fa fa-sync"></i> Refresh
+                        </button>
+                        <span class="text-muted ms-2" id="issue-count"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <div id="city-map"></div>
+        </div>
+
+        <div class="map-legend mt-3">
+            <div class="d-flex flex-wrap gap-3 justify-content-center">
+                <span class="legend-item"><span class="legend-dot" style="background:#FFC107"></span> Open</span>
+                <span class="legend-item"><span class="legend-dot" style="background:#17A2B8"></span> Assigned</span>
+                <span class="legend-item"><span class="legend-dot" style="background:#2490EF"></span> In Progress</span>
+                <span class="legend-item"><span class="legend-dot" style="background:#DC3545"></span> Overdue</span>
+                <span class="legend-item"><span class="legend-dot" style="background:#28A745"></span> Resolved</span>
+                <span class="legend-item"><span class="legend-dot" style="background:#6C757D"></span> Closed</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+var map, markersLayer;
+
+document.addEventListener('DOMContentLoaded', function() {
+    initMap();
+    loadWardFilter();
+    loadMapData();
+    loadMapStats();
+});
+
+function initMap() {
+    // Default center: India (can be configured)
+    map = L.map('city-map').setView([13.0827, 80.2707], 12);
+
+    // OpenStreetMap tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19
+    }).addTo(map);
+
+    markersLayer = L.layerGroup().addTo(map);
+}
+
+function loadWardFilter() {
+    frappe.call({
+        method: 'civic_tracker.api.geojson.get_ward_boundaries',
+        callback: function(r) {
+            if (r.message) {
+                var select = document.getElementById('filter-ward');
+                r.message.forEach(function(ward) {
+                    var opt = document.createElement('option');
+                    opt.value = ward.name;
+                    opt.textContent = ward.ward_name;
+                    select.appendChild(opt);
+                });
+            }
+        }
+    });
+}
+
+function loadMapData() {
+    var status = document.getElementById('filter-status').value;
+    var ward = document.getElementById('filter-ward').value;
+    var issueType = document.getElementById('filter-type').value;
+
+    frappe.call({
+        method: 'civic_tracker.api.geojson.get_issues_geojson',
+        args: {
+            status: status || undefined,
+            ward: ward || undefined,
+            issue_type: issueType || undefined
+        },
+        callback: function(r) {
+            if (r.message) {
+                plotGeoJSON(r.message);
+                document.getElementById('issue-count').textContent =
+                    r.message.metadata.total_count + ' issues on map';
+            }
+        }
+    });
+}
+
+function loadMapStats() {
+    frappe.call({
+        method: 'civic_tracker.api.geojson.get_map_statistics',
+        callback: function(r) {
+            if (r.message) {
+                document.getElementById('stat-open').textContent = r.message.open_count || 0;
+                document.getElementById('stat-overdue').textContent = r.message.overdue_count || 0;
+                document.getElementById('stat-active').textContent = r.message.active_count || 0;
+                document.getElementById('stat-resolved').textContent = r.message.resolved_count || 0;
+            }
+        }
+    });
+}
+
+function plotGeoJSON(geojson) {
+    markersLayer.clearLayers();
+
+    if (!geojson.features || geojson.features.length === 0) {
+        return;
+    }
+
+    var bounds = [];
+
+    geojson.features.forEach(function(feature) {
+        var coords = feature.geometry.coordinates;
+        var props = feature.properties;
+        var lat = coords[1];
+        var lng = coords[0];
+
+        bounds.push([lat, lng]);
+
+        // Create colored circle marker
+        var marker = L.circleMarker([lat, lng], {
+            radius: getMarkerRadius(props.priority),
+            fillColor: props.marker_color,
+            color: '#fff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.85
+        });
+
+        // Build popup content
+        var popupContent = '<div class="map-popup">' +
+            '<h6>' + escapeHtml(props.title) + '</h6>' +
+            '<table class="popup-table">' +
+            '<tr><td><strong>Tracking ID</strong></td><td><code>' + props.tracking_id + '</code></td></tr>' +
+            '<tr><td><strong>Status</strong></td><td><span class="popup-status" style="background:' + props.marker_color + '">' + props.status + '</span></td></tr>' +
+            '<tr><td><strong>Type</strong></td><td>' + props.issue_type + '</td></tr>' +
+            '<tr><td><strong>Priority</strong></td><td>' + props.priority + '</td></tr>' +
+            '<tr><td><strong>Ward</strong></td><td>' + props.ward + '</td></tr>' +
+            '<tr><td><strong>Contractor</strong></td><td>' + props.contractor + '</td></tr>' +
+            '<tr><td><strong>Reported</strong></td><td>' + (props.reported_date || 'N/A') + '</td></tr>' +
+            '</table>' +
+            '<div class="popup-actions">' +
+            '<a href="/track-issue/' + props.tracking_id + '" class="btn btn-sm btn-primary" target="_blank">Track Issue</a> ' +
+            '<a href="/app/civic-issue/' + props.id + '" class="btn btn-sm btn-outline-secondary" target="_blank">View Details</a>' +
+            '</div>' +
+            '</div>';
+
+        marker.bindPopup(popupContent, { maxWidth: 350 });
+        markersLayer.addLayer(marker);
+    });
+
+    // Fit map to show all markers
+    if (bounds.length > 0) {
+        map.fitBounds(bounds, { padding: [50, 50] });
+    }
+}
+
+function getMarkerRadius(priority) {
+    var sizes = { 'Critical': 12, 'High': 10, 'Medium': 8, 'Low': 6 };
+    return sizes[priority] || 8;
+}
+
+function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(text));
+    return div.innerHTML;
+}
+</script>
+
+<style>
+.civic-map-page {
+    padding: 1rem;
+}
+.map-header {
+    margin-bottom: 1rem;
+}
+.map-header h1 {
+    color: #2490ef;
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
+}
+.map-header h1 i {
+    margin-right: 0.5rem;
+}
+
+/* Stats badges */
+.stat-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    min-width: 70px;
+}
+.stat-count {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+}
+.stat-label {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+.stat-open { background: rgba(255,193,7,0.15); }
+.stat-open .stat-count { color: #d4a200; }
+.stat-overdue { background: rgba(220,53,69,0.15); }
+.stat-overdue .stat-count { color: #dc3545; }
+.stat-active { background: rgba(36,144,239,0.15); }
+.stat-active .stat-count { color: #2490ef; }
+.stat-resolved { background: rgba(40,167,69,0.15); }
+.stat-resolved .stat-count { color: #28a745; }
+
+/* Map container */
+.map-container {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    border: 1px solid #e2e8f0;
+}
+#city-map {
+    height: 65vh;
+    min-height: 500px;
+    width: 100%;
+    z-index: 1;
+}
+
+/* Filters */
+.map-filters .card-body {
+    background: #f8f9fa;
+}
+
+/* Legend */
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: #555;
+}
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 2px solid #fff;
+    box-shadow: 0 0 2px rgba(0,0,0,0.3);
+}
+
+/* Popup styles */
+.map-popup h6 {
+    margin: 0 0 0.5rem;
+    color: #2490ef;
+    font-size: 0.95rem;
+}
+.popup-table {
+    width: 100%;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+.popup-table td {
+    padding: 0.2rem 0.5rem;
+    vertical-align: top;
+}
+.popup-table td:first-child {
+    white-space: nowrap;
+    color: #666;
+}
+.popup-status {
+    color: #fff;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.popup-actions {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #eee;
+}
+</style>
+{% endblock %}

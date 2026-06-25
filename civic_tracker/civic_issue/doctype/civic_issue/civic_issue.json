@@ -191,6 +191,15 @@
             "label": "Anonymous Report"
         },
         {
+            "fieldname": "source_channel",
+            "fieldtype": "Select",
+            "label": "Source Channel",
+            "options": "Web Portal\nWhatsApp\nPhone\nWalk-in\nEmail",
+            "default": "Web Portal",
+            "read_only": 1,
+            "in_standard_filter": 1
+        },
+        {
             "fieldname": "section_break_escalation",
             "fieldtype": "Section Break",
             "label": "Escalation History",

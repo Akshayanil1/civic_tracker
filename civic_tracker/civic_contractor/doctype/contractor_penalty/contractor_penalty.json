@@ -1,0 +1,188 @@
+{
+    "name": "Contractor Penalty",
+    "module": "Civic Tracker",
+    "doctype": "DocType",
+    "document_type": "Document",
+    "engine": "InnoDB",
+    "autoname": "format:CP-{####}",
+    "title_field": "penalty_title",
+    "search_fields": "penalty_title,contractor,civic_issue",
+    "fields": [
+        {
+            "fieldname": "penalty_title",
+            "fieldtype": "Data",
+            "label": "Penalty Title",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "contractor",
+            "fieldtype": "Link",
+            "label": "Contractor",
+            "options": "Civic Contractor",
+            "reqd": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "civic_issue",
+            "fieldtype": "Link",
+            "label": "Civic Issue",
+            "options": "Civic Issue",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Penalty Status",
+            "options": "Draft\nPending\nApproved\nDeducted\nWaived\nDisputed",
+            "default": "Draft",
+            "reqd": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "section_break_sla",
+            "fieldtype": "Section Break",
+            "label": "SLA Breach Details"
+        },
+        {
+            "fieldname": "sla_deadline",
+            "fieldtype": "Datetime",
+            "label": "SLA Deadline",
+            "read_only": 1
+        },
+        {
+            "fieldname": "resolution_date",
+            "fieldtype": "Datetime",
+            "label": "Actual Resolution Date",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_sla",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "days_overdue",
+            "fieldtype": "Float",
+            "label": "Days Overdue",
+            "precision": 1,
+            "read_only": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "hours_overdue",
+            "fieldtype": "Float",
+            "label": "Hours Overdue",
+            "precision": 1,
+            "read_only": 1
+        },
+        {
+            "fieldname": "section_break_financial",
+            "fieldtype": "Section Break",
+            "label": "Financial Details"
+        },
+        {
+            "fieldname": "penalty_rate_per_day",
+            "fieldtype": "Currency",
+            "label": "Penalty Rate (\u20b9 per day)",
+            "default": 500,
+            "reqd": 1
+        },
+        {
+            "fieldname": "penalty_amount",
+            "fieldtype": "Currency",
+            "label": "Total Penalty Amount (\u20b9)",
+            "read_only": 1,
+            "in_list_view": 1,
+            "bold": 1
+        },
+        {
+            "fieldname": "column_break_financial",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "max_penalty_cap",
+            "fieldtype": "Currency",
+            "label": "Maximum Penalty Cap (\u20b9)",
+            "description": "If set, penalty will not exceed this amount"
+        },
+        {
+            "fieldname": "purchase_invoice",
+            "fieldtype": "Link",
+            "label": "Linked Purchase Invoice",
+            "options": "Purchase Invoice",
+            "description": "ERPNext Purchase Invoice where this penalty is deducted"
+        },
+        {
+            "fieldname": "section_break_details",
+            "fieldtype": "Section Break",
+            "label": "Additional Details"
+        },
+        {
+            "fieldname": "ward",
+            "fieldtype": "Link",
+            "label": "Ward",
+            "options": "Municipal Ward",
+            "read_only": 1
+        },
+        {
+            "fieldname": "issue_type",
+            "fieldtype": "Data",
+            "label": "Issue Type",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_details",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "penalty_date",
+            "fieldtype": "Date",
+            "label": "Penalty Date",
+            "default": "Today",
+            "reqd": 1
+        },
+        {
+            "fieldname": "approved_by",
+            "fieldtype": "Link",
+            "label": "Approved By",
+            "options": "User",
+            "read_only": 1
+        },
+        {
+            "fieldname": "section_break_notes",
+            "fieldtype": "Section Break",
+            "label": "Notes"
+        },
+        {
+            "fieldname": "reason",
+            "fieldtype": "Small Text",
+            "label": "Reason / Remarks"
+        }
+    ],
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        },
+        {
+            "role": "Civic Admin",
+            "read": 1,
+            "write": 1,
+            "create": 1
+        },
+        {
+            "role": "All",
+            "read": 1
+        }
+    ]
+}
