@@ -1,0 +1,98 @@
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="proposals-page">
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Participatory Budgeting</h1>
+        <p class="text-center text-muted mb-5">Vote for the upcoming infrastructure projects in your ward.</p>
+        
+        <div class="row mb-4">
+            <div class="col-md-4 offset-md-4">
+                <select id="ward-filter" class="form-select" onchange="loadProposals()">
+                    <option value="">All Wards</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="row" id="proposals-list">
+            <div class="col-12 text-center text-muted">Loading proposals...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadWards();
+    loadProposals();
+});
+
+function loadWards() {
+    frappe.call({
+        method: 'civic_tracker.api.geojson.get_ward_boundaries',
+        callback: function(r) {
+            if (r.message) {
+                var select = document.getElementById('ward-filter');
+                r.message.forEach(function(ward) {
+                    var opt = document.createElement('option');
+                    opt.value = ward.name;
+                    opt.textContent = ward.ward_name;
+                    select.appendChild(opt);
+                });
+            }
+        }
+    });
+}
+
+function loadProposals() {
+    var ward = document.getElementById('ward-filter').value;
+    frappe.call({
+        method: 'civic_tracker.api.voting.get_ward_proposals',
+        args: { ward: ward || undefined },
+        callback: function(r) {
+            var container = document.getElementById('proposals-list');
+            if (r.message && r.message.length > 0) {
+                container.innerHTML = r.message.map(function(p) {
+                    return `
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">${p.title}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Ward: ${p.ward} | Budget: ₹${p.estimated_budget}</h6>
+                                <p class="card-text">${p.description}</p>
+                            </div>
+                            <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+                                <strong>${p.total_votes} Votes</strong>
+                                <button class="btn btn-primary btn-sm" onclick="castVote('${p.name}', '${p.ward}')">
+                                    Vote
+                                </button>
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+            } else {
+                container.innerHTML = '<div class="col-12 text-center text-muted">No open proposals found.</div>';
+            }
+        }
+    });
+}
+
+function castVote(proposal_name, ward) {
+    if (frappe.session.user === 'Guest') {
+        frappe.msgprint("Please login to vote.");
+        window.location.href = '/login?redirect-to=/proposals';
+        return;
+    }
+    
+    frappe.call({
+        method: 'civic_tracker.api.voting.cast_vote',
+        args: { proposal_name: proposal_name, ward: ward },
+        callback: function(r) {
+            if (!r.exc) {
+                frappe.show_alert({message: r.message.message, indicator: 'green'});
+                loadProposals();
+            }
+        }
+    });
+}
+</script>
+{% endblock %}

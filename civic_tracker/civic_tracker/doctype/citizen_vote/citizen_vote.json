@@ -1,0 +1,49 @@
+{
+    "name": "Citizen Vote",
+    "module": "Civic Tracker",
+    "doctype": "DocType",
+    "document_type": "Document",
+    "engine": "InnoDB",
+    "autoname": "format:VOTE-{####}",
+    "fields": [
+        {
+            "fieldname": "proposal",
+            "fieldtype": "Link",
+            "label": "Proposal",
+            "options": "Civic Proposal",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "citizen_email",
+            "fieldtype": "Data",
+            "label": "Citizen Email",
+            "options": "Email",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "ward",
+            "fieldtype": "Link",
+            "label": "Citizen Ward",
+            "options": "Municipal Ward",
+            "reqd": 1
+        },
+        {
+            "fieldname": "vote_timestamp",
+            "fieldtype": "Datetime",
+            "label": "Vote Timestamp",
+            "read_only": 1,
+            "in_list_view": 1
+        }
+    ],
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        }
+    ]
+}

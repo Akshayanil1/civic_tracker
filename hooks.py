@@ -26,6 +26,8 @@ website_route_rules = [
     {"from_route": "/api/method/civic_tracker.api.whatsapp.webhook_receive", "to_route": "api/method/civic_tracker.api.whatsapp.webhook_receive"},
     {"from_route": "/city-map", "to_route": "city-map"},
     {"from_route": "/ward-leaderboard", "to_route": "ward-leaderboard"},
+    {"from_route": "/proposals", "to_route": "proposals"},
+    {"from_route": "/api/method/civic_tracker.api.iot.sensor_webhook", "to_route": "api/method/civic_tracker.api.iot.sensor_webhook"},
 ]
 
 # Scheduled Jobs
@@ -33,6 +35,10 @@ scheduler_events = {
     "daily": [
         "civic_tracker.api.sla.check_overdue_issues",
         "civic_tracker.api.penalty.check_unpaid_penalties",
+    ],
+    "monthly": [
+        "civic_tracker.api.predictive.generate_trend_report",
+        "civic_tracker.api.predictive.pre_monsoon_forecasting",
     ],
 }
 

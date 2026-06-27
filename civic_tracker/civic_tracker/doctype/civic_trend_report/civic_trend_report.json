@@ -1,0 +1,58 @@
+{
+    "name": "Civic Trend Report",
+    "module": "Civic Tracker",
+    "doctype": "DocType",
+    "document_type": "Document",
+    "engine": "InnoDB",
+    "autoname": "format:CTR-{YYYY}-{MM}-{####}",
+    "fields": [
+        {
+            "fieldname": "report_date",
+            "fieldtype": "Date",
+            "label": "Report Date",
+            "reqd": 1,
+            "default": "Today"
+        },
+        {
+            "fieldname": "month",
+            "fieldtype": "Select",
+            "label": "Month",
+            "options": "January\nFebruary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember",
+            "reqd": 1
+        },
+        {
+            "fieldname": "year",
+            "fieldtype": "Int",
+            "label": "Year",
+            "reqd": 1
+        },
+        {
+            "fieldname": "ward",
+            "fieldtype": "Link",
+            "label": "Ward (Optional)",
+            "options": "Municipal Ward"
+        },
+        {
+            "fieldname": "analysis_data",
+            "fieldtype": "Code",
+            "label": "Analysis Data (JSON)",
+            "options": "JSON",
+            "read_only": 1
+        },
+        {
+            "fieldname": "high_risk_flags",
+            "fieldtype": "Small Text",
+            "label": "High Risk Flags",
+            "read_only": 1
+        }
+    ],
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        }
+    ]
+}

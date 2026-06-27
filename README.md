@@ -1,4 +1,4 @@
-# Civic Tracker
+# Civic Tracker V3.0 (Smart City Expansion)
 
 Municipal SLA & Grievance Routing Engine — An open-source civic administration system built on Frappe framework.
 
@@ -28,6 +28,18 @@ Civic Tracker enables citizens to report municipal issues (potholes, garbage, wa
 - **Number Cards** — Total Open Issues, In Progress, Overdue, Resolved
 - **Charts** — Issues by Type, Issues by Ward, Issues by Status
 - **Executive Workspace** — Centralized dashboard for the Municipal Commissioner
+
+### Version 2.0 Expansion Features
+- **WhatsApp Bot Integration (Omnichannel)** — Securely process Meta Cloud API webhooks to create issues directly from WhatsApp.
+- **Financial Accountability (Contractor Penalties)** — Auto-generates deductions for contractors missing SLA deadlines (ERPNext Integrated).
+- **Geospatial Analytics (GIS Mapping)** — Real-time interactive maps via Leaflet.js visualizing potholes, drainage, and open requests.
+- **Localization & Public Transparency** — Tamil and Hindi translation support alongside a competitive Ward Leaderboard to drive performance.
+
+### Version 3.0 Smart City Expansion
+- **IoT "Smart Bin" & Sensor Ingestion** — FastAPI-driven high-throughput endpoints to ingest IoT payloads, automatically triggering civic issues for overflowing bins or flooding.
+- **Predictive Maintenance & Seasonal Analytics** — Generates automated `Civic Trend Reports` analyzing historical data and deploying preventive maintenance tasks pre-monsoon. Includes an advanced Mayor's Dashboard.
+- **Participatory Budgeting (Civic Engagement)** — Introduces `Civic Proposals`, allowing citizens to securely vote on infrastructure budgets directly via the portal.
+- **Enterprise Reliability & CI/CD** — Frappe automated test suites running via GitHub Actions, validating SLA breaches and penalty generation.
 
 ## Installation
 
