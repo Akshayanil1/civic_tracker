@@ -1,11 +1,31 @@
 import frappe
 from frappe.model.document import Document
 from frappe.utils import now_datetime, add_to_date, get_url
+from civic_tracker.api.ai import validate_image_with_ai, analyze_issue_text, dynamic_assignment_routing
 
 
 class CivicIssue(Document):
     def before_insert(self):
         self.generate_tracking_id()
+        
+        # Phase 14: NLP Categorization and Sentiment
+        if self.description:
+            category, urgency = analyze_issue_text(self.description)
+            if category:
+                self.issue_type = category
+            if urgency:
+                self.urgency_score = urgency
+                
+        # Phase 13: Image Validation
+        if self.issue_image:
+            is_valid = validate_image_with_ai(self.issue_image)
+            if not is_valid:
+                self.status = "Spam"
+                # Rejecting submission effectively if we don't want it open
+                
+        # Phase 14: Dynamic Assignment for Critical Issues
+        dynamic_assignment_routing(self)
+        
         self.set_escalation_time()
 
     def validate(self):

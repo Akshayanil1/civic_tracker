@@ -27,6 +27,7 @@ website_route_rules = [
     {"from_route": "/city-map", "to_route": "city-map"},
     {"from_route": "/ward-leaderboard", "to_route": "ward-leaderboard"},
     {"from_route": "/proposals", "to_route": "proposals"},
+    {"from_route": "/developer-portal", "to_route": "developer-portal"},
     {"from_route": "/api/method/civic_tracker.api.iot.sensor_webhook", "to_route": "api/method/civic_tracker.api.iot.sensor_webhook"},
 ]
 
@@ -39,6 +40,9 @@ scheduler_events = {
     "monthly": [
         "civic_tracker.api.predictive.generate_trend_report",
         "civic_tracker.api.predictive.pre_monsoon_forecasting",
+    ],
+    "weekly": [
+        "civic_tracker.api.public.generate_weekly_csv_dump",
     ],
 }
 

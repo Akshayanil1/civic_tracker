@@ -1,0 +1,64 @@
+{
+    "name": "Civic Tracker AI Settings",
+    "module": "Civic Tracker",
+    "doctype": "DocType",
+    "document_type": "Document",
+    "issingle": 1,
+    "engine": "InnoDB",
+    "fields": [
+        {
+            "fieldname": "enable_ai_triage",
+            "fieldtype": "Check",
+            "label": "Enable AI Triaging & Image Validation",
+            "default": "0"
+        },
+        {
+            "fieldname": "ai_provider",
+            "fieldtype": "Select",
+            "label": "AI Provider",
+            "options": "OpenAI\nGemini",
+            "default": "OpenAI",
+            "depends_on": "eval:doc.enable_ai_triage==1"
+        },
+        {
+            "fieldname": "api_key",
+            "fieldtype": "Password",
+            "label": "API Key",
+            "depends_on": "eval:doc.enable_ai_triage==1"
+        },
+        {
+            "fieldname": "section_break_spam",
+            "fieldtype": "Section Break",
+            "label": "Spam Settings",
+            "depends_on": "eval:doc.enable_ai_triage==1"
+        },
+        {
+            "fieldname": "reject_spam_images",
+            "fieldtype": "Check",
+            "label": "Automatically Reject Spam Images",
+            "default": "1"
+        },
+        {
+            "fieldname": "section_break_urgent",
+            "fieldtype": "Section Break",
+            "label": "Emergency Routing Settings",
+            "depends_on": "eval:doc.enable_ai_triage==1"
+        },
+        {
+            "fieldname": "emergency_urgency_threshold",
+            "fieldtype": "Int",
+            "label": "Emergency Urgency Threshold",
+            "default": "8",
+            "description": "Urgency score (1-10) above which issues are marked as critical emergencies."
+        }
+    ],
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        }
+    ]
+}

@@ -1,0 +1,75 @@
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="developer-portal">
+    <div class="container py-5">
+        <h1 class="mb-4">Developer Portal & Open Data API</h1>
+        <p class="lead text-muted">Access anonymized civic issue data to build your own dashboards, run data science experiments, and promote civic transparency.</p>
+        
+        <hr class="my-4">
+        
+        <h3>API Endpoint: Get Resolved Issues</h3>
+        <p>This endpoint returns a list of resolved and closed civic issues, strictly stripping out Personally Identifiable Information (PII).</p>
+        
+        <div class="bg-light p-3 rounded mb-4">
+            <code>GET /api/method/civic_tracker.api.public.get_open_data</code>
+        </div>
+        
+        <h4>Parameters</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>limit</code></td>
+                    <td>Integer</td>
+                    <td>Number of records to return (Default: 100, Max: 1000)</td>
+                </tr>
+                <tr>
+                    <td><code>offset</code></td>
+                    <td>Integer</td>
+                    <td>Pagination offset (Default: 0)</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h4>Example Response</h4>
+        <pre class="bg-dark text-light p-3 rounded">
+{
+  "message": {
+    "dataset": "Civic Issues (Resolved)",
+    "count": 1,
+    "data": [
+      {
+        "tracking_id": "CI-23-ABCDEF",
+        "issue_title": "Pothole on Main St",
+        "issue_type": "Road",
+        "priority": "High",
+        "ward": "Ward 4",
+        "status": "Resolved",
+        "issue_date": "2023-10-01 10:00:00",
+        "resolution_date": "2023-10-02 15:30:00",
+        "latitude": 13.0827,
+        "longitude": 80.2707
+      }
+    ]
+  }
+}
+        </pre>
+        
+        <hr class="my-5">
+        
+        <h3>Weekly Open Data CSV Dumps</h3>
+        <p>Every Sunday at midnight, our system automatically exports the entire anonymized dataset into a CSV file. Researchers and data scientists can download the latest snapshot here.</p>
+        
+        <a href="/files/civic_open_data_latest.csv" class="btn btn-primary" download>
+            <i class="fa fa-download"></i> Download Latest CSV Dataset
+        </a>
+    </div>
+</div>
+{% endblock %}
