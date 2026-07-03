@@ -1,0 +1,53 @@
+{
+    "name": "Global Master Control",
+    "module": "Civic Tracker",
+    "doctype": "DocType",
+    "document_type": "Document",
+    "issingle": 1,
+    "engine": "InnoDB",
+    "fields": [
+        {
+            "fieldname": "enable_saas",
+            "fieldtype": "Check",
+            "label": "Enable Multi-Tenant SaaS Mode",
+            "default": "0"
+        },
+        {
+            "fieldname": "section_break_provisioning",
+            "fieldtype": "Section Break",
+            "label": "Automated Site Provisioning",
+            "depends_on": "eval:doc.enable_saas==1"
+        },
+        {
+            "fieldname": "default_db_password",
+            "fieldtype": "Password",
+            "label": "Default Database Root Password"
+        },
+        {
+            "fieldname": "admin_email",
+            "fieldtype": "Data",
+            "label": "Global Admin Email"
+        },
+        {
+            "fieldname": "section_break_tenants",
+            "fieldtype": "Section Break",
+            "label": "Registered Municipalities",
+            "depends_on": "eval:doc.enable_saas==1"
+        },
+        {
+            "fieldname": "tenant_list",
+            "fieldtype": "Table",
+            "label": "Active Tenants",
+            "options": "Municipal Tenant"
+        }
+    ],
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        }
+    ]
+}

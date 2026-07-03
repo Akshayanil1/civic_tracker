@@ -1,0 +1,38 @@
+{
+    "name": "Municipal Tenant",
+    "module": "Civic Tracker",
+    "doctype": "DocType",
+    "document_type": "Document",
+    "istable": 1,
+    "engine": "InnoDB",
+    "fields": [
+        {
+            "fieldname": "municipality_name",
+            "fieldtype": "Data",
+            "label": "Municipality Name",
+            "in_list_view": 1,
+            "reqd": 1
+        },
+        {
+            "fieldname": "site_name",
+            "fieldtype": "Data",
+            "label": "Site Domain (e.g. pune.civic.local)",
+            "in_list_view": 1,
+            "reqd": 1
+        },
+        {
+            "fieldname": "admin_email",
+            "fieldtype": "Data",
+            "label": "Admin Email",
+            "reqd": 1
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Status",
+            "options": "Pending Provisioning\nActive\nSuspended",
+            "default": "Pending Provisioning",
+            "in_list_view": 1
+        }
+    ]
+}

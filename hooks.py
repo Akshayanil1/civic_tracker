@@ -29,6 +29,7 @@ website_route_rules = [
     {"from_route": "/proposals", "to_route": "proposals"},
     {"from_route": "/developer-portal", "to_route": "developer-portal"},
     {"from_route": "/api/method/civic_tracker.api.iot.sensor_webhook", "to_route": "api/method/civic_tracker.api.iot.sensor_webhook"},
+    {"from_route": "/api/method/civic_tracker.api.payment.razorpay_webhook", "to_route": "api/method/civic_tracker.api.payment.razorpay_webhook"},
 ]
 
 # Scheduled Jobs

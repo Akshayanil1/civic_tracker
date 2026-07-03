@@ -42,6 +42,12 @@ Accountability is a two-way street. The platform provides:
 - **Participatory Budgeting:** A module where citizens can securely vote on upcoming infrastructure proposals.
 - **Open Data API:** A rate-limited, anonymized REST API and weekly CSV dumps for researchers, journalists, and data scientists to build independent dashboards.
 
+### 3.5. Multi-Tenant SaaS & Mobile First (Version 5.0)
+- **Multi-Tenant Architecture:** Scaled to host entire states, allowing each municipality its own isolated database while sharing the core codebase, complete with a Global Master Control for automated provisioning.
+- **Global Analytics:** Aggregates anonymized SLA performance across all tenants to generate a State-Wide Municipal Performance Ranking.
+- **Offline-First Field App:** A React Native mobile app enabling field workers to view assigned issues, take 'After' photos, and mark issues resolved offline (syncing when internet is restored).
+- **FinTech Integration (UPI):** Automated SMS/WhatsApp secure Razorpay payment links for contractors to clear SLA penalties instantly, logged via webhook listeners.
+
 ---
 
 ## 4. Technical Architecture
@@ -85,6 +91,9 @@ Accountability is a two-way street. The platform provides:
 | **Geospatial Analytics** | Live Leaflet.js maps and predictive Mayor Dashboards for preventative monsoon maintenance. |
 | **Participatory Budgeting** | `Civic Proposal` and `Citizen Vote` doctypes to crowd-source capital expenditure priorities. |
 | **Open Data Portal** | PII-scrubbed API endpoints and weekly CSV dumps for researchers. |
+| **Multi-Tenant Core** | Global Master Control doctypes mapping domains to isolated municipal databases. |
+| **FinTech Engine** | Razorpay payment link generation and webhook listeners for instant penalty clearing. |
+| **Mobile API** | Token-based REST API supporting offline-sync workflows for field worker apps. |
 
 ---
 

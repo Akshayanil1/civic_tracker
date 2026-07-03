@@ -40,7 +40,7 @@
             "fieldname": "status",
             "fieldtype": "Select",
             "label": "Penalty Status",
-            "options": "Draft\nPending\nApproved\nDeducted\nWaived\nDisputed",
+            "options": "Draft\nPending\nApproved\nDeducted\nPaid\nWaived\nDisputed",
             "default": "Draft",
             "reqd": 1,
             "in_list_view": 1,
@@ -118,6 +118,18 @@
             "label": "Linked Purchase Invoice",
             "options": "Purchase Invoice",
             "description": "ERPNext Purchase Invoice where this penalty is deducted"
+        },
+        {
+            "fieldname": "payment_link",
+            "fieldtype": "Data",
+            "label": "Payment Link (UPI/Gateway)",
+            "read_only": 1
+        },
+        {
+            "fieldname": "transaction_id",
+            "fieldtype": "Data",
+            "label": "Transaction ID",
+            "read_only": 1
         },
         {
             "fieldname": "section_break_details",
