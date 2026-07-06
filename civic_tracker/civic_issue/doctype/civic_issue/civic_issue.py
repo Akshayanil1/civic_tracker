@@ -3,6 +3,11 @@ from frappe.model.document import Document
 from frappe.utils import now_datetime, add_to_date, get_url
 from civic_tracker.api.ai import validate_image_with_ai, analyze_issue_text, dynamic_assignment_routing
 
+try:
+    from geopy.distance import geodesic
+except ImportError:
+    pass
+
 
 class CivicIssue(Document):
     def before_insert(self):
@@ -28,8 +33,14 @@ class CivicIssue(Document):
         
         self.set_escalation_time()
 
+    def after_insert(self):
+        # Phase 26, Day 4: Spatial Duplicate Clustering (enqueue job)
+        frappe.enqueue("civic_tracker.api.clustering.cluster_duplicates", queue="short", issue_name=self.name)
+
     def validate(self):
         self.validate_assignment()
+        if self.status == "Resolved":
+            self.validate_geofence()
 
     def on_update(self):
         self.send_tracking_email()
@@ -104,3 +115,25 @@ class CivicIssue(Document):
         self.resolution_date = None
         self.resolution_notes = ""
         self.save(ignore_permissions=True)
+
+    def validate_geofence(self):
+        """Day 2 & 3: Geo-Fenced Proof of Work Validation"""
+        if not (self.latitude and self.longitude):
+            return # Original issue has no location
+            
+        if not self.actual_resolution_lat_lng:
+            frappe.throw("Actual Resolution Lat/Lng is required to mark the issue as Resolved. (Geo-Fencing Enabled)")
+            
+        try:
+            actual_lat, actual_lng = [float(x.strip()) for x in self.actual_resolution_lat_lng.split(',')]
+            original_point = (self.latitude, self.longitude)
+            resolution_point = (actual_lat, actual_lng)
+            
+            # Distance in meters
+            dist = geodesic(original_point, resolution_point).meters
+            
+            if dist > 50:
+                frappe.throw(f"Fraud Prevention: Resolution photo must be taken at the original site. You are {int(dist)} meters away!")
+        except ValueError:
+            frappe.throw("Invalid format for Actual Resolution Lat/Lng. Expected format: 'latitude, longitude'")
+

@@ -31,7 +31,7 @@
             "fieldname": "status",
             "fieldtype": "Select",
             "label": "Status",
-            "options": "Open\nAssigned\nIn Progress\nResolved\nClosed\nOverdue\nReopened\nSpam",
+            "options": "Open\nAssigned\nIn Progress\nResolved\nClosed\nOverdue\nReopened\nSpam\nMerged",
             "default": "Open",
             "reqd": 1,
             "in_list_view": 1,
@@ -162,6 +162,12 @@
             "read_only": 1
         },
         {
+            "fieldname": "actual_resolution_lat_lng",
+            "fieldtype": "Data",
+            "label": "Actual Resolution Lat/Lng (EXIF)",
+            "read_only": 1
+        },
+        {
             "fieldname": "resolution_notes",
             "fieldtype": "Small Text",
             "label": "Resolution Notes"
@@ -210,6 +216,13 @@
             "fieldtype": "Section Break",
             "label": "Escalation History",
             "hidden": 1
+        },
+        {
+            "fieldname": "master_issue",
+            "fieldtype": "Link",
+            "label": "Master Issue (If Merged)",
+            "options": "Civic Issue",
+            "read_only": 1
         },
         {
             "fieldname": "escalation_log",

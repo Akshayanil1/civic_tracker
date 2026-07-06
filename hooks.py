@@ -45,6 +45,11 @@ scheduler_events = {
     "weekly": [
         "civic_tracker.api.public.generate_weekly_csv_dump",
     ],
+    "cron": {
+        "0 6 * * 1": [
+            "civic_tracker.api.dispatch.dispatch_monday_pdfs"
+        ]
+    }
 }
 
 # Document Events
@@ -52,7 +57,8 @@ doc_events = {
     "Civic Issue": {
         "on_update": [
             "civic_tracker.api.sla.on_civic_issue_update",
-            "civic_tracker.api.penalty.auto_generate_penalty_on_close"
+            "civic_tracker.api.penalty.auto_generate_penalty_on_close",
+            "civic_tracker.api.accounting.generate_journal_entry_on_close"
         ],
         "on_change": "civic_tracker.api.whatsapp.send_status_update_whatsapp",
     },

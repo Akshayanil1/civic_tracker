@@ -86,6 +86,12 @@
             "label": "Additional Notes"
         },
         {
+            "fieldname": "cost_center",
+            "fieldtype": "Link",
+            "label": "Budget Cost Center",
+            "options": "Cost Center"
+        },
+        {
             "fieldname": "notes",
             "fieldtype": "Small Text",
             "label": "Notes"
