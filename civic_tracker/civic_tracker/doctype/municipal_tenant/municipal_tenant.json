@@ -4,16 +4,34 @@
     "custom": 0,
     "fields": [
         {
-            "fieldname": "title",
+            "fieldname": "tenant_name",
             "fieldtype": "Data",
-            "label": "Title"
+            "label": "Tenant Name",
+            "reqd": 1
+        },
+        {
+            "fieldname": "domain",
+            "fieldtype": "Data",
+            "label": "Domain",
+            "unique": 1
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Status",
+            "options": "Active\nInactive",
+            "default": "Active"
         }
     ],
     "permissions": [
         {
             "role": "System Manager",
             "read": 1,
-            "write": 1
+            "write": 1,
+            "create": 1,
+            "delete": 1
         }
-    ]
+    ],
+    "naming_rule": "Expression",
+    "autoname": "format:TENANT-.####"
 }

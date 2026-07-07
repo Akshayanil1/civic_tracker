@@ -4,16 +4,48 @@
     "custom": 0,
     "fields": [
         {
-            "fieldname": "title",
-            "fieldtype": "Data",
-            "label": "Title"
+            "fieldname": "contractor",
+            "fieldtype": "Link",
+            "options": "Civic Contractor",
+            "label": "Contractor",
+            "reqd": 1
+        },
+        {
+            "fieldname": "tenant",
+            "fieldtype": "Link",
+            "options": "Municipal Tenant",
+            "label": "Tenant",
+            "reqd": 1
+        },
+        {
+            "fieldname": "issue",
+            "fieldtype": "Link",
+            "options": "Civic Issue",
+            "label": "Civic Issue"
+        },
+        {
+            "fieldname": "penalty_amount",
+            "fieldtype": "Currency",
+            "label": "Penalty Amount",
+            "reqd": 1
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Status",
+            "options": "Unpaid\nPaid\nDeducted",
+            "default": "Unpaid"
         }
     ],
     "permissions": [
         {
             "role": "System Manager",
             "read": 1,
-            "write": 1
+            "write": 1,
+            "create": 1,
+            "delete": 1
         }
-    ]
+    ],
+    "naming_rule": "Expression",
+    "autoname": "format:{{tenant}}-CONTRACTOR-.####"
 }

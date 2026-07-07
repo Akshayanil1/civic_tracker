@@ -6,14 +6,98 @@
         {
             "fieldname": "title",
             "fieldtype": "Data",
-            "label": "Title"
+            "label": "Title",
+            "reqd": 1
+        },
+        {
+            "fieldname": "tenant",
+            "fieldtype": "Link",
+            "options": "Municipal Tenant",
+            "label": "Tenant",
+            "reqd": 1
+        },
+        {
+            "fieldname": "issue_type",
+            "fieldtype": "Select",
+            "label": "Issue Type",
+            "options": "Pothole\nWater Leak\nStreetlight\nGarbage\nFlood"
+        },
+        {
+            "fieldname": "description",
+            "fieldtype": "Text Editor",
+            "label": "Description"
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Status",
+            "options": "Open\nAssigned\nIn Progress\nResolved\nClosed\nOverdue\nReopened\nSpam\nMerged",
+            "default": "Open"
+        },
+        {
+            "fieldname": "priority",
+            "fieldtype": "Select",
+            "label": "Priority",
+            "options": "Low\nMedium\nHigh\nCritical"
+        },
+        {
+            "fieldname": "urgency_score",
+            "fieldtype": "Int",
+            "label": "Urgency Score"
+        },
+        {
+            "fieldname": "ward",
+            "fieldtype": "Link",
+            "options": "Municipal Ward",
+            "label": "Ward"
+        },
+        {
+            "fieldname": "assigned_contractor",
+            "fieldtype": "Link",
+            "options": "Civic Contractor",
+            "label": "Assigned Contractor"
+        },
+        {
+            "fieldname": "latitude",
+            "fieldtype": "Float",
+            "label": "Latitude"
+        },
+        {
+            "fieldname": "longitude",
+            "fieldtype": "Float",
+            "label": "Longitude"
+        },
+        {
+            "fieldname": "actual_resolution_lat_lng",
+            "fieldtype": "Data",
+            "label": "Actual Resolution Lat/Lng"
+        },
+        {
+            "fieldname": "master_issue",
+            "fieldtype": "Link",
+            "options": "Civic Issue",
+            "label": "Master Issue"
+        },
+        {
+            "fieldname": "image",
+            "fieldtype": "Attach Image",
+            "label": "Issue Image"
+        },
+        {
+            "fieldname": "sla_deadline",
+            "fieldtype": "Datetime",
+            "label": "SLA Deadline"
         }
     ],
     "permissions": [
         {
             "role": "System Manager",
             "read": 1,
-            "write": 1
+            "write": 1,
+            "create": 1,
+            "delete": 1
         }
-    ]
+    ],
+    "naming_rule": "Expression",
+    "autoname": "format:{{tenant}}-CIVIC-.####"
 }

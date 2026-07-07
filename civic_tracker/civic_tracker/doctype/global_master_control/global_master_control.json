@@ -4,16 +4,27 @@
     "custom": 0,
     "fields": [
         {
-            "fieldname": "title",
-            "fieldtype": "Data",
-            "label": "Title"
+            "fieldname": "enable_global_analytics",
+            "fieldtype": "Check",
+            "label": "Enable Global Analytics"
+        },
+        {
+            "fieldname": "default_tenant",
+            "fieldtype": "Link",
+            "options": "Municipal Tenant",
+            "label": "Default Tenant"
         }
     ],
     "permissions": [
         {
             "role": "System Manager",
             "read": 1,
-            "write": 1
+            "write": 1,
+            "create": 1,
+            "delete": 1
         }
-    ]
+    ],
+    "naming_rule": "Expression",
+    "autoname": "format:{{tenant}}-GLOBAL-.####",
+    "issingle": 1
 }

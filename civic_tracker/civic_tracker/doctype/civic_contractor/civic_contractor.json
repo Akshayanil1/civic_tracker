@@ -4,16 +4,51 @@
     "custom": 0,
     "fields": [
         {
-            "fieldname": "title",
+            "fieldname": "contractor_name",
             "fieldtype": "Data",
-            "label": "Title"
+            "label": "Contractor Name",
+            "reqd": 1
+        },
+        {
+            "fieldname": "tenant",
+            "fieldtype": "Link",
+            "options": "Municipal Tenant",
+            "label": "Tenant",
+            "reqd": 1
+        },
+        {
+            "fieldname": "phone",
+            "fieldtype": "Data",
+            "label": "Phone Number"
+        },
+        {
+            "fieldname": "email",
+            "fieldtype": "Data",
+            "label": "Email Address"
+        },
+        {
+            "fieldname": "supplier",
+            "fieldtype": "Link",
+            "options": "Supplier",
+            "label": "ERPNext Supplier"
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Status",
+            "options": "Active\nSuspended",
+            "default": "Active"
         }
     ],
     "permissions": [
         {
             "role": "System Manager",
             "read": 1,
-            "write": 1
+            "write": 1,
+            "create": 1,
+            "delete": 1
         }
-    ]
+    ],
+    "naming_rule": "Expression",
+    "autoname": "format:{{tenant}}-CIVIC-.####"
 }

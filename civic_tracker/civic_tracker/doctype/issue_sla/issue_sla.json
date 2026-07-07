@@ -4,16 +4,36 @@
     "custom": 0,
     "fields": [
         {
-            "fieldname": "title",
-            "fieldtype": "Data",
-            "label": "Title"
+            "fieldname": "issue_type",
+            "fieldtype": "Select",
+            "label": "Issue Type",
+            "options": "Pothole\nWater Leak\nStreetlight\nGarbage\nFlood",
+            "reqd": 1,
+            "unique": 1
+        },
+        {
+            "fieldname": "tenant",
+            "fieldtype": "Link",
+            "options": "Municipal Tenant",
+            "label": "Tenant",
+            "reqd": 1
+        },
+        {
+            "fieldname": "resolution_time_hours",
+            "fieldtype": "Int",
+            "label": "Resolution Time (Hours)",
+            "reqd": 1
         }
     ],
     "permissions": [
         {
             "role": "System Manager",
             "read": 1,
-            "write": 1
+            "write": 1,
+            "create": 1,
+            "delete": 1
         }
-    ]
+    ],
+    "naming_rule": "Expression",
+    "autoname": "format:{{tenant}}-ISSUE-.####"
 }

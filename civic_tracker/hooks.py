@@ -32,3 +32,21 @@ scheduler_events = {
         "civic_tracker.api.reporting.generate_weekly_csv_dump"
     ]
 }
+
+permission_query_conditions = {
+    "Civic Issue": "civic_tracker.api.tenant_isolation.get_tenant_permission_query_conditions",
+    "Civic Contractor": "civic_tracker.api.tenant_isolation.get_tenant_permission_query_conditions",
+    "Municipal Ward": "civic_tracker.api.tenant_isolation.get_tenant_permission_query_conditions",
+    "Contractor Penalty": "civic_tracker.api.tenant_isolation.get_tenant_permission_query_conditions",
+    "Issue SLA": "civic_tracker.api.tenant_isolation.get_tenant_permission_query_conditions",
+    "Standard Repair Cost": "civic_tracker.api.tenant_isolation.get_tenant_permission_query_conditions"
+}
+
+has_permission = {
+    "Civic Issue": "civic_tracker.api.tenant_isolation.has_tenant_permission",
+    "Civic Contractor": "civic_tracker.api.tenant_isolation.has_tenant_permission",
+    "Municipal Ward": "civic_tracker.api.tenant_isolation.has_tenant_permission",
+    "Contractor Penalty": "civic_tracker.api.tenant_isolation.has_tenant_permission",
+    "Issue SLA": "civic_tracker.api.tenant_isolation.has_tenant_permission",
+    "Standard Repair Cost": "civic_tracker.api.tenant_isolation.has_tenant_permission"
+}
