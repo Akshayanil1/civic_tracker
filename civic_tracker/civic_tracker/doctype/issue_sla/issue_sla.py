@@ -1,4 +1,4 @@
 from frappe.model.document import Document
 
-class MunicipalTenant(Document):
+class IssueSla(Document):
     pass

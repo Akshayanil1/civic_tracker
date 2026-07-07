@@ -1,26 +1,19 @@
 {
     "name": "Standard Repair Cost",
     "module": "Civic Tracker",
-    "doctype": "DocType",
-    "document_type": "Document",
-    "engine": "InnoDB",
-    "autoname": "field:issue_type",
+    "custom": 0,
     "fields": [
         {
-            "fieldname": "issue_type",
-            "fieldtype": "Select",
-            "label": "Issue Type",
-            "options": "Road\nWater\nSanitation\nElectricity\nGarbage\nDrainage\nStreet Light\nOther",
-            "unique": 1,
-            "reqd": 1,
-            "in_list_view": 1
-        },
+            "fieldname": "title",
+            "fieldtype": "Data",
+            "label": "Title"
+        }
+    ],
+    "permissions": [
         {
-            "fieldname": "standard_cost",
-            "fieldtype": "Currency",
-            "label": "Standard Cost (\u20b9)",
-            "reqd": 1,
-            "in_list_view": 1
+            "role": "System Manager",
+            "read": 1,
+            "write": 1
         }
     ]
 }
